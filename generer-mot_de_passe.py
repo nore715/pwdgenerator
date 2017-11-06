@@ -44,7 +44,7 @@ def genererMotDePasse():
 			passwd += caractere
 			c += 1
 		
-		# Condition de validité du mot de passe : il doit contenir au moins 3 des 4 classes de caractères parmis nb*
+		# Conditions de validité du mot de passe : il doit contenir au moins 3 des 4 classes de caractères définies plus haut
 		# (A|B) & (A|C) & (A|D) & (B|C) & (B|D) & (C|D)
 		if (bool(nbmaju) or bool(nbminu)) and (bool(nbmaju) or bool(nbchif)) and (bool(nbmaju) or bool(nbspec)) and (bool(nbminu) or bool(nbchif)) and (bool(nbminu) or bool(nbspec)) and (bool(nbchif) or bool(nbspec)):
 			return passwd
