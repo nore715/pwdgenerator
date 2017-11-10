@@ -2,7 +2,7 @@
 #-*- coding: utf-8 -*-
 
 #~ Importation des bibliothèques nécessaires
-import os, sys
+import os, sys, getopt
 import string
 from random import *
 

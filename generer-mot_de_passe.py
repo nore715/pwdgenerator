@@ -1,13 +1,19 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
-#~ Importation des bibliothèques nécessaires
-import os
+import getopt, sys
+import argparse
+import os, sys, getopt
 import string
 from random import *
 
-############### Définition d'une fonction
-def genererMotDePasse():
+HardCodedLimit = 8
+NbOfPwd = 1
+LowerSizeLimit = 8
+UpperSizeLimit = 12
+
+############### Définition de la fonction de génération de mot de passe
+def genererMotDePasse(lower,upper):
 	
 	# lettres min + lettres maj + chiffres
 	pop = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-*$%&.:?!"
@@ -27,8 +33,8 @@ def genererMotDePasse():
 		nbchif = 0
 		nbspec = 0
 		
-		# Longueur variable entre 8 et 16 caractères
-		longueur = randrange(8,16)
+		# Longueur variable
+		longueur = randrange(lower,upper)
 		
 		# Boucle de génération d'un mot de passe
 		while c < longueur:
@@ -44,10 +50,42 @@ def genererMotDePasse():
 			passwd += caractere
 			c += 1
 		
-		# Conditions de validité du mot de passe : il doit contenir au moins 3 des 4 classes de caractères définies plus haut
+		# Condition de validité du mot de passe : il doit contenir au moins 3 des 4 classes de caractères parmis nb*
 		# (A|B) & (A|C) & (A|D) & (B|C) & (B|D) & (C|D)
 		if (bool(nbmaju) or bool(nbminu)) and (bool(nbmaju) or bool(nbchif)) and (bool(nbmaju) or bool(nbspec)) and (bool(nbminu) or bool(nbchif)) and (bool(nbminu) or bool(nbspec)) and (bool(nbchif) or bool(nbspec)):
 			return passwd
 ###################
 
-print genererMotDePasse()
+parser = argparse.ArgumentParser()
+parser.add_argument("-n", "--number",
+                    type=int,
+                    default=1,
+                    help="number of random strings to generate")
+parser.add_argument("-l", "--lower",
+                    type=int,
+                    default=HardCodedLimit,
+                    help="minimum number of characters in random string")
+parser.add_argument("-u", "--upper",
+                    type=int,
+                    default=HardCodedLimit,
+                    help="maximum number of characters in random string")
+args = parser.parse_args()
+
+if args.number < 1:
+    print "The number of required random strings cannot be null or negative"
+elif args.lower < HardCodedLimit:
+    print "The minimum number of characters cannot be lower than ",HardCodedLimit
+elif args.upper < args.lower:
+    print "The max nb of char in random string cannot be lower than the min nb of chars"
+else:
+    nb = 0
+    print "Vous voulez",args.number,"mots de passe entre",args.lower,"et",args.upper,"caracteres"
+    while nb < args.number:
+        print genererMotDePasse(args.lower,args.upper+1)
+        nb += 1
+
+
+
+
+
+
